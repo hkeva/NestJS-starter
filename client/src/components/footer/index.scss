@@ -1,0 +1,9 @@
+@import "../../assets/styles/mixins.scss";
+@import "../../assets/styles/color.scss";
+
+.footer {
+  height: 100px;
+  background-color: $color-dark;
+  color: $color-white;
+  @include displayFlex(unset, center, center);
+}

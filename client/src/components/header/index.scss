@@ -1,0 +1,19 @@
+@import "../../assets/styles/mixins.scss";
+@import "../../assets/styles/color.scss";
+
+.header {
+  height: 100px;
+  background-color: $color-dark;
+  @include displayFlex(unset, center, center);
+  gap: 2rem;
+
+  li {
+    list-style: none;
+    cursor: pointer;
+  }
+
+  a {
+    text-decoration: none;
+    color: $color-white;
+  }
+}

@@ -12,6 +12,7 @@ import {
   Patch,
   Post,
   UploadedFile,
+  UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
@@ -20,16 +21,19 @@ import { extname } from 'path';
 import { PostService } from './post.service';
 import { CreatePostDto } from './dto/create-post.dto';
 import { UpdatePostDto } from './dto/update-post.dto';
+import { AuthGuard } from '@nestjs/passport';
 
 @Controller('post')
 export class PostController {
   constructor(private postService: PostService) {}
 
+  @UseGuards(AuthGuard('jwt'))
   @Get('')
   getPosts() {
     return this.postService.getAllPosts();
   }
 
+  @UseGuards(AuthGuard('jwt'))
   @Post('')
   @UseInterceptors(
     FileInterceptor('file', {
@@ -61,16 +65,19 @@ export class PostController {
     return this.postService.createPost(body);
   }
 
+  @UseGuards(AuthGuard('jwt'))
   @Delete('/:postId')
   deletePost(@Param() param: { postId: number }) {
     return this.postService.deletePost(param.postId);
   }
 
+  @UseGuards(AuthGuard('jwt'))
   @Get('/:postId')
   getPost(@Param() param: { postId: number }) {
     return this.postService.getPostById(param.postId);
   }
 
+  @UseGuards(AuthGuard('jwt'))
   @Patch('/:postId')
   @UseInterceptors(
     FileInterceptor('file', {
@@ -100,7 +107,7 @@ export class PostController {
           errorHttpStatusCode: HttpStatus.UNPROCESSABLE_ENTITY,
         }),
     )
-    file: Express.Multer.File,
+    file: Express.Multer.File | null,
     @Body() updateUserDto: UpdatePostDto,
     @Param() param: { postId: number },
   ) {

@@ -1,0 +1,11 @@
+.layout {
+  &__body {
+    height: auto;
+    background-color: yellow;
+  }
+
+  &__footer {
+    height: 100px;
+    background-color: blue;
+  }
+}

@@ -1,0 +1,27 @@
+@import "../../assets/styles/mixins.scss";
+@import "../../assets/styles/color.scss";
+@import "../../assets/styles/fonts.scss";
+
+.textInput {
+  &__title {
+    margin: 10px auto;
+  }
+
+  &__input {
+    padding: 11px;
+    font-size: $font-14;
+    background-color: $color-white;
+    color: $color-black;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-shadow: 0px 0px 5px rgba(66, 66, 66, 0.75);
+
+    &:focus {
+      outline: none;
+    }
+  }
+
+  &__asterisk {
+    color: $color-red;
+  }
+}
