@@ -20,7 +20,15 @@ export const userApi = createApi({
         body: userInfo,
       }),
     }),
+
+    userRegister: builder.mutation({
+      query: (userRegisterInfo) => ({
+        url: "user",
+        method: "POST",
+        body: userRegisterInfo,
+      }),
+    }),
   }),
 })
 
-export const { useUserLoginMutation } = userApi
+export const { useUserRegisterMutation, useUserLoginMutation } = userApi

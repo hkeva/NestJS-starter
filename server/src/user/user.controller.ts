@@ -50,8 +50,10 @@ export class UserController {
   @Post('')
   async store(@Body() body: CreateUserDto) {
     const getUser = await this.userService.getUserByEmail(body.email);
-    if (getUser) return { message: 'User already exists' };
-    else if (body.password !== body.confirmPassword)
+    if (getUser) {
+      if (getUser.isVerified) return { message: 'User already exists' };
+      else return { message: 'Please verify your email' };
+    } else if (body.password !== body.confirmPassword)
       return { message: "Password and confirm password don't match" };
     else {
       // eslint-disable-next-line @typescript-eslint/no-var-requires
