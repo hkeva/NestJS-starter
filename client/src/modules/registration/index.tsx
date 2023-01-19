@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react"
+import { useSelector } from "react-redux"
 import { TextInput } from "../../components/textInput"
+import { RootState } from "../../redux/store"
 import { useUserRegisterMutation } from "../../redux/user/userService"
 import "./index.scss"
 
@@ -18,8 +20,8 @@ export const Registration: React.FC<RegistrationProps> = ({}) => {
   })
 
   useEffect(() => {
-    data && setResponse(data)
-  }, [data])
+    console.log("error", error)
+  }, [error])
 
   return (
     <div className="registration">
@@ -30,6 +32,7 @@ export const Registration: React.FC<RegistrationProps> = ({}) => {
         setValue={(val: string) => {
           setUserInfo({ ...userInfo, firstName: val })
         }}
+        errorMessage="hgvhghgc"
       />
       <TextInput
         title="Last name"
@@ -75,6 +78,7 @@ export const Registration: React.FC<RegistrationProps> = ({}) => {
       </button>
       <br />
       <br />
+      <div>{isLoading && "Registering user, please wait..."}</div>
       <div>{response && response.message}</div>
       <br />
       <br />

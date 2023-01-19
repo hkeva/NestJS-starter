@@ -1,19 +1,21 @@
 import {
   Body,
-  ConsoleLogger,
   Controller,
   Get,
-  Param,
-  Patch,
+  HttpStatus,
   Post,
   Query,
+  Res,
   UseGuards,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { MailService } from 'src/mail/mail.service';
 import { CreateUserDto } from './dto/create-user.dto';
-import { UpdateUserDto } from './dto/update-user.dto';
 import { UserService } from './user.service';
+import { Response } from 'express';
+import { httpResponse } from 'src/httpsResponse';
+import { validationMessages } from 'src/validationMessages';
+
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const bcrypt = require('bcrypt');
 // eslint-disable-next-line @typescript-eslint/no-var-requires
@@ -27,7 +29,6 @@ require('dotenv').config();
 
 @Controller('user')
 export class UserController {
-  //dependency injection
   constructor(
     private userService: UserService,
     private mailService: MailService,
@@ -39,23 +40,30 @@ export class UserController {
     return this.userService.getAllUsers();
   }
 
-  // @Patch('/:userId')
-  // update(
-  //   @Body() updateUserDto: UpdateUserDto,
-  //   @Param() param: { userId: number },
-  // ) {
-  //   return this.userService.update(updateUserDto, param);
-  // }
-
   @Post('')
-  async store(@Body() body: CreateUserDto) {
+  async store(@Body() body: CreateUserDto, @Res() res: Response) {
     const getUser = await this.userService.getUserByEmail(body.email);
+
     if (getUser) {
-      if (getUser.isVerified) return { message: 'User already exists' };
-      else return { message: 'Please verify your email' };
-    } else if (body.password !== body.confirmPassword)
-      return { message: "Password and confirm password don't match" };
-    else {
+      if (getUser.isVerified)
+        res
+          .status(HttpStatus.BAD_REQUEST)
+          .send(
+            httpResponse(
+              HttpStatus.BAD_REQUEST,
+              validationMessages.userAlreadyExists,
+            ),
+          );
+      else
+        res
+          .status(HttpStatus.BAD_REQUEST)
+          .send(
+            httpResponse(
+              HttpStatus.BAD_REQUEST,
+              validationMessages.verifyEmail,
+            ),
+          );
+    } else {
       // eslint-disable-next-line @typescript-eslint/no-var-requires
       const { v4: uuidv4 } = require('uuid');
       const token = uuidv4();
@@ -76,32 +84,74 @@ export class UserController {
     }
   }
 
-  // @Get('/:userId')
-  // getUser(@Param() params: { userId: number }) {
-  //   return params;
-  // }
-
   @Get('verifyEmail')
-  async userVerification(@Query('email') email, @Query('token') token) {
+  async userVerification(
+    @Query('email') email,
+    @Query('token') token,
+    @Res() res: Response,
+  ) {
     const getUser = await this.userService.getUserByEmail(email);
 
     if (getUser) {
       if (getUser.isVerified) {
-        return { message: 'User is already verified' };
+        return res
+          .status(HttpStatus.BAD_REQUEST)
+          .send(
+            httpResponse(
+              HttpStatus.BAD_REQUEST,
+              validationMessages.userAlreadyExists,
+            ),
+          );
       } else if (getUser.emailVerificationToken === token) {
         const isVerified = await this.userService.verifyUser(email);
 
         if (isVerified) {
           if (new Date() > getUser.emailVerificationTokenExpiredAt) {
-            return { message: 'Token has been expired' };
+            return res
+              .status(HttpStatus.BAD_REQUEST)
+              .send(
+                httpResponse(
+                  HttpStatus.BAD_REQUEST,
+                  validationMessages.tokenExpired,
+                ),
+              );
           } else {
             await this.userService.clearEmailVerificationToken(getUser.email);
-            return {
-              message: 'user is verified',
-            };
+            return res
+              .status(HttpStatus.BAD_REQUEST)
+              .send(
+                httpResponse(
+                  HttpStatus.BAD_REQUEST,
+                  validationMessages.userVerified,
+                ),
+              );
           }
-        } else return { message: 'user is not verified' };
-      } else return { message: 'Invalid token' };
-    } else return { message: 'User does not exist' };
+        } else
+          return res
+            .status(HttpStatus.BAD_REQUEST)
+            .send(
+              httpResponse(
+                HttpStatus.BAD_REQUEST,
+                validationMessages.userNotVerified,
+              ),
+            );
+      } else
+        return res
+          .status(HttpStatus.BAD_REQUEST)
+          .send(
+            httpResponse(
+              HttpStatus.BAD_REQUEST,
+              validationMessages.invalidToken,
+            ),
+          );
+    } else
+      return res
+        .status(HttpStatus.BAD_REQUEST)
+        .send(
+          httpResponse(
+            HttpStatus.BAD_REQUEST,
+            validationMessages.userDoesNotExist,
+          ),
+        );
   }
 }

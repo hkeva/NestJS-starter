@@ -5,6 +5,7 @@ import {
   IsString,
   Matches,
 } from 'class-validator';
+import { Match } from '../../customDecorator/match.decorator';
 
 export class CreateUserDto {
   @IsNotEmpty()
@@ -26,6 +27,7 @@ export class CreateUserDto {
 
   @IsNotEmpty()
   @IsString()
+  @Match('password', { message: 'Password and confirm password must match' })
   confirmPassword: string;
 
   @IsOptional()

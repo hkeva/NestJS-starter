@@ -5,7 +5,6 @@ import {
   FileTypeValidator,
   Get,
   HttpStatus,
-  Optional,
   Param,
   ParseFilePipe,
   ParseFilePipeBuilder,
@@ -14,6 +13,7 @@ import {
   UploadedFile,
   UseGuards,
   UseInterceptors,
+  Headers,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
@@ -22,12 +22,14 @@ import { PostService } from './post.service';
 import { CreatePostDto } from './dto/create-post.dto';
 import { UpdatePostDto } from './dto/update-post.dto';
 import { AuthGuard } from '@nestjs/passport';
+import jwt_decode from 'jwt-decode';
+import { JwtService } from '@nestjs/jwt';
 
 @Controller('post')
 export class PostController {
   constructor(private postService: PostService) {}
 
-  @UseGuards(AuthGuard('jwt'))
+  // @UseGuards(AuthGuard('jwt'))
   @Get('')
   getPosts() {
     return this.postService.getAllPosts();
@@ -48,7 +50,7 @@ export class PostController {
       }),
     }),
   )
-  createPosts(
+  async createPosts(
     @UploadedFile(
       new ParseFilePipe({
         validators: [
@@ -60,8 +62,14 @@ export class PostController {
     )
     file: Express.Multer.File,
     @Body() body: CreatePostDto,
+    @Headers() headers,
   ) {
-    body.imageFile = file.path;
+    // const email = jwt_decode(headers.authorization);
+    // console.log('User email', JSON.stringify(email));
+    // const decoded = await this.jwtService.verify(headers.authorization);
+    // console.log('decoded', decoded);
+
+    body.imageFile = file.filename;
     return this.postService.createPost(body);
   }
 

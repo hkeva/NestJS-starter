@@ -48,6 +48,10 @@ export const TextInput: React.FC<TextInputProps> = ({
         // value={inputValue}
         onChange={handleChange}
       ></input>
+
+      {errorMessage && (
+        <div className="textInput__errorMessage">{errorMessage}</div>
+      )}
     </div>
   )
 }

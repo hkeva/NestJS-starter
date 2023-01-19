@@ -17,12 +17,12 @@ export class PostService {
   async getAllPosts() {
     let getPost = await this.postRepository.find();
 
-    getPost.map((singlePost) => {
-      singlePost.imageFile = path.join(
-        process.cwd(),
-        '/' + singlePost.imageFile,
-      );
-    });
+    // getPost.map((singlePost) => {
+    //   singlePost.imageFile = path.join(
+    //     process.cwd(),
+    //     '/' + singlePost.imageFile,
+    //   );
+    // });
 
     getPost = getPost.filter((post) => {
       return post.scheduledTime < new Date();

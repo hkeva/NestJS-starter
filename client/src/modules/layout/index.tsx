@@ -1,5 +1,6 @@
 import { Footer } from "../../components/footer"
-import { Header } from "../../components/header"
+import { Navbar } from "../../components/navbar"
+import Header from "../header"
 import "./index.scss"
 
 export interface LayoutProps {
@@ -10,6 +11,7 @@ export const Layout: React.FC<LayoutProps> = ({ children }) => {
   return (
     <div className="layout">
       <Header />
+      <Navbar />
       {children}
       <Footer />
     </div>

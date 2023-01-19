@@ -5,7 +5,7 @@ export class UpdatePostDto {
   @IsString()
   title: string;
 
-  @IsNotEmpty()
+  @IsOptional()
   @IsString()
   userId: string;
 

@@ -24,4 +24,10 @@
   &__asterisk {
     color: $color-red;
   }
+
+  &__errorMessage {
+    margin: 5px 0 10px 0;
+    color: $color-red;
+    font-size: $font-13;
+  }
 }

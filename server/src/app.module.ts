@@ -18,9 +18,9 @@ import { join } from 'path';
   controllers: [AppController, MailController],
   providers: [MailService],
   imports: [
-    // ServeStaticModule.forRoot({
-    //   rootPath: join(__dirname, '..', 'files'),
-    // }),
+    ServeStaticModule.forRoot({
+      rootPath: join(__dirname, '..', 'uploads'),
+    }),
     MulterModule.register({
       dest: './uploads',
     }),

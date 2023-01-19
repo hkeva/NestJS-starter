@@ -5,7 +5,7 @@ export class CreatePostDto {
   @IsString()
   title: string;
 
-  @IsNotEmpty()
+  @IsOptional()
   @IsString()
   userId: string;
 
