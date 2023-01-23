@@ -2,7 +2,7 @@ import { ChangeEvent, useEffect, useState } from "react"
 import "./index.scss"
 
 export interface TextInputProps {
-  title: string
+  title?: string
   prefix?: string
   suffix?: string
   placeholder: string
