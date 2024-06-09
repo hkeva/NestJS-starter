@@ -7,4 +7,4 @@ This is an ongoing project aimed at exploring Next.js backend capabilities while
 **Note:** This project is a work in progress, and as such, there may be existing bugs and faults that are actively being addressed.
 
 ## Tags
-#Next.js #RTK-Query
+#NestJS #RTK-Query
