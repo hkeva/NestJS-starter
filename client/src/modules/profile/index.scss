@@ -1,6 +1,0 @@
-@import "../../assets/styles/mixins.scss";
-
-.userProfile {
-  height: calc(100vh - 200px);
-  @include displayFlex(unset, center, center);
-}

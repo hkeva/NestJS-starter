@@ -1,10 +1,14 @@
-# Project Overview
+# Project Name
 
-## Description
-This is an ongoing project aimed at exploring Next.js backend capabilities while delving into RTK Query functionality in the frontend. The primary objective is to investigate and gain familiarity with these technologies.
+## Overview
 
-## Status
-**Note:** This project is a work in progress, and as such, there may be existing bugs and faults that are actively being addressed.
+This ongoing project is focused on exploring and gaining familiarity with the Nest.js backend framework. The goal is to dive deeper into the capabilities of Nest.js and understand how it can be effectively used in backend development.
+
+## Note
+
+Please be aware that this project is still in progress. There may be bugs, and some parts of the code might not yet follow best practices in terms of formatting.
 
 ## Tags
-#NestJS #RTK-Query
+
+- #NestJS
+- #NodeJSFramework
